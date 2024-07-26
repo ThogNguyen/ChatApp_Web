@@ -22,7 +22,6 @@ export default function RoomList() {
                     </div>
                 </div>
             </div>
-            {/* Modal */}
             <div className="modal fade" id="createRoomModal" tabIndex="-1" aria-labelledby="createRoomModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">

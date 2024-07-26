@@ -28,7 +28,7 @@
     flex: 1; /* Take up remaining space */
     padding: 10px;
     overflow-y: auto;
-    background-color: #f1f1f1; /* Light background color for the chat content */
+    background-color: #f1f1f1; 
 }
 
 .message-container {
@@ -42,57 +42,57 @@
 }
 
 .message {
-    margin-bottom: 8px; /* Space between messages */
-    max-width: 50%; /* Fixed width of the message bubbles */
-    padding: 8px; /* Padding inside the bubbles */
-    border-radius: 15px; /* Rounded corners */
-    font-size: 0.875rem; /* Font size for readability */
-    line-height: 1.4; /* Line height for better text spacing */
-    word-wrap: break-word; /* Ensure long words break and wrap */
+    margin-bottom: 8px; 
+    max-width: 50%;
+    padding: 8px;
+    border-radius: 15px;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    word-wrap: break-word; 
 }
 
 .message-left {
-    background-color: #ffffff; /* White background for received messages */
-    color: #000000; /* Text color */
-    margin-right: auto; /* Align to the left */
-    border: 1px solid #ddd; /* Border for definition */
+    background-color: #ffffff; 
+    color: #000000;
+    margin-right: auto;
+    border: 1px solid #ddd; 
 }
 
 .message-right {
-    background-color: #007bff; /* Blue background for sent messages */
-    color: #ffffff; /* White text color */
-    margin-left: auto; /* Align to the right */
-    border: 1px solid #0056b3; /* Darker border for definition */
-    text-align: right; /* Align text to the right */
+    background-color: #007bff; 
+    color: #ffffff; 
+    margin-left: auto;
+    border: 1px solid #0056b3;
+    text-align: right;
 }
 
 .message-body {
-    padding: 4px; /* Padding inside the message body */
-    word-wrap: break-word; /* Break words and wrap */
+    padding: 4px;
+    word-wrap: break-word; 
 }
 
 /* Fixed input field at the bottom of the chat component */
 .input-field {
     padding: 10px;
-    background-color: #ffffff; /* Background color for the input field */
-    border-top: 1px solid #ccc; /* Border on top */
+    background-color: #ffffff;
+    border-top: 1px solid #ccc; 
     display: flex;
     align-items: center;
 }
 
 .input-field input {
-    width: calc(100% - 60px); /* Full width minus button width */
+    width: calc(100% - 60px); 
     padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 20px; /* Rounded corners for the input */
+    border-radius: 20px; 
 }
 
 .input-field button {
     margin-left: 10px;
     padding: 10px;
     border: none;
-    background-color: #007bff; /* Button color */
+    background-color: #007bff; 
     color: white;
-    border-radius: 20px; /* Rounded corners for the button */
+    border-radius: 20px; 
     cursor: pointer;
 }
