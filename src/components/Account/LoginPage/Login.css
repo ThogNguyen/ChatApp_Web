@@ -1,0 +1,53 @@
+/* Đặt nền cho trang đăng nhập */
+.body-login {
+    background: url(https://img2.thuthuatphanmem.vn/uploads/2018/12/30/anh-background-dep-nhat_110341130.jpg) no-repeat center center;
+    background-size: cover; 
+    height: 100vh; /* Chiếm toàn bộ chiều cao màn hình */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 0px 18px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+}
+
+.login-container .login-title {
+    text-align: center;
+    margin: 10px 0 30px 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-container .btn-login {
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 0;
+    outline: 0;
+    background: teal;
+    color: white;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.login-container .btn-login:hover {
+    background: rgb(0, 78, 78);
+}
+
+.login-container .link-to-register{
+    color: rgb(68, 132, 143);
+    text-decoration: none;
+}

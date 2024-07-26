@@ -1,0 +1,98 @@
+/* ChatWindow.css */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+}
+
+.chat-header {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.chat-header p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.btn-add-people {
+    float: right;
+}
+
+.chat-content {
+    flex: 1; /* Take up remaining space */
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #f1f1f1; /* Light background color for the chat content */
+}
+
+.message-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    margin-bottom: 8px; /* Space between messages */
+    max-width: 50%; /* Fixed width of the message bubbles */
+    padding: 8px; /* Padding inside the bubbles */
+    border-radius: 15px; /* Rounded corners */
+    font-size: 0.875rem; /* Font size for readability */
+    line-height: 1.4; /* Line height for better text spacing */
+    word-wrap: break-word; /* Ensure long words break and wrap */
+}
+
+.message-left {
+    background-color: #ffffff; /* White background for received messages */
+    color: #000000; /* Text color */
+    margin-right: auto; /* Align to the left */
+    border: 1px solid #ddd; /* Border for definition */
+}
+
+.message-right {
+    background-color: #007bff; /* Blue background for sent messages */
+    color: #ffffff; /* White text color */
+    margin-left: auto; /* Align to the right */
+    border: 1px solid #0056b3; /* Darker border for definition */
+    text-align: right; /* Align text to the right */
+}
+
+.message-body {
+    padding: 4px; /* Padding inside the message body */
+    word-wrap: break-word; /* Break words and wrap */
+}
+
+/* Fixed input field at the bottom of the chat component */
+.input-field {
+    padding: 10px;
+    background-color: #ffffff; /* Background color for the input field */
+    border-top: 1px solid #ccc; /* Border on top */
+    display: flex;
+    align-items: center;
+}
+
+.input-field input {
+    width: calc(100% - 60px); /* Full width minus button width */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px; /* Rounded corners for the input */
+}
+
+.input-field button {
+    margin-left: 10px;
+    padding: 10px;
+    border: none;
+    background-color: #007bff; /* Button color */
+    color: white;
+    border-radius: 20px; /* Rounded corners for the button */
+    cursor: pointer;
+}

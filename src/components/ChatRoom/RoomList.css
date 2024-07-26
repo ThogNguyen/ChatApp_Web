@@ -1,0 +1,58 @@
+/* Ẩn background của accordion button */
+.custom-accordion-button {
+    background-color: transparent; 
+    color: #f1f1f1;
+    border: none;
+    font-weight: bold; 
+}
+
+/* Ẩn background của accordion button khi active */
+.custom-accordion-button:not(.collapsed) {
+    background-color: transparent; 
+    color: #f1f1f1;
+}
+
+/* Ẩn background của accordion item */
+.custom-accordion-item {
+    background-color: transparent;
+    border: none; 
+}
+
+/* Ẩn background của accordion collapse */
+.custom-accordion-body {
+    background-color: #5a2a6b; 
+}
+
+/* Add styles for links within the accordion body */
+.custom-accordion-body a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none; 
+    color: #ffffff;
+    font-weight: bold; 
+}
+
+.custom-accordion-body a:hover {
+    background-color: #8d4b8a; 
+    color: #ffffff;
+}
+
+/* Center the Create Room button horizontally */
+.custom-accordion-body .btn-create-group {
+    display: block;
+    margin: auto;
+}
+
+/* Ensure the modal is centered on the screen */
+.modal-dialog {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    min-height: calc(100% - 1.75rem);
+}
+
+/* Adjust the modal content to be centered */
+.modal-content {
+    border-radius: 0.5rem; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
