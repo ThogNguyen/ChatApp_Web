@@ -44,69 +44,113 @@ export default function ChatWindow() {
                 <div className='message-container'>
                     <div className='message message-left'>
                         <div className='message-body'>
-                            <p><i>Username</i> - <span>15:00 PM</span></p>
-                            <p>Hello! How are you?</p>
+                            <div>
+                                <p className='message-info'>
+                                    <span>15:00 PM</span> - <i>Username</i>
+                                </p>
+                            </div>
+                            <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
                     </div>
                     <div className='message message-right'>
                         <div className='message-body'>
-                            <p><span>15:00 PM</span> - <i>Username</i></p>
-                            <p>I'm good, thanks! How about you?</p>
+                            <div>
+                                <p className='message-info'>
+                                    <span>15:00 PM</span> - <i>Username</i>
+                                </p>
+                            </div>
+                            <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
                     </div>
                     <div className='message message-left'>
                         <div className='message-body'>
-                            <p><i>Username</i> - <span>15:00 PM</span></p>
-                            <p>Hello! How are youas dhasodh alsk dak lsdha skl dhs alk hs gfjdf
-                                dfh g jdfh gkd fh gk j dfh gkj?</p>
+                            <div>
+                                <p className='message-info'>
+                                    <span>15:00 PM</span> - <i>Username</i>
+                                </p>
+                            </div>
+                            <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
                     </div>
                     <div className='message message-right'>
                         <div className='message-body'>
-                            <p><span>15:00 PM</span> - <i>Username</i></p>
-                            <p>I'm good, thanks! How about you?</p>
+                            <div>
+                                <p className='message-info'>
+                                    <span>15:00 PM</span> - <i>Username</i>
+                                </p>
+                            </div>
+                            <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
                     </div>
                     <div className='message message-left'>
                         <div className='message-body'>
-                            <p><i>Username</i> - <span>15:00 PM</span></p>
-                            <p>Hello! How are you?</p>
+                            <div>
+                                <p className='message-info'>
+                                    <span>15:00 PM</span> - <i>Username</i>
+                                </p>
+                            </div>
+                            <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
                     </div>
                     <div className='message message-right'>
                         <div className='message-body'>
-                            <p><span>15:00 PM</span> - <i>Username</i></p>
-                            <p>I'm good, thanks! How about you?</p>
+                            <div>
+                                <p className='message-info'>
+                                    <span>15:00 PM</span> - <i>Username</i>
+                                </p>
+                            </div>
+                            <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
                     </div>
                     <div className='message message-left'>
                         <div className='message-body'>
-                            <p><i>Username</i> - <span>15:00 PM</span></p>
-                            <p>Hello! How are you?</p>
+                            <div>
+                                <p className='message-info'>
+                                    <span>15:00 PM</span> - <i>Username</i>
+                                </p>
+                            </div>
+                            <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
                     </div>
                     <div className='message message-right'>
                         <div className='message-body'>
-                            <p><span>15:00 PM</span> - <i>Username</i></p>
-                            <p>I'm good, thanks! How about you?</p>
+                            <div>
+                                <p className='message-info'>
+                                    <span>15:00 PM</span> - <i>Username</i>
+                                </p>
+                            </div>
+                            <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
                     </div>
                     <div className='message message-left'>
                         <div className='message-body'>
-                            <p><i>Username</i> - <span>15:00 PM</span></p>
-                            <p>Hello! How are you?</p>
+                            <div>
+                                <p className='message-info'>
+                                    <span>15:00 PM</span> - <i>Username</i>
+                                </p>
+                            </div>
+                            <p className='message-content'>I'm good, thanks!
+                            </p>
                         </div>
                     </div>
                     <div className='message message-right'>
                         <div className='message-body'>
-                            <p><span>15:00 PM</span> - <i>Username</i></p>
-                            <p>I'm good, thanks! How about you?</p>
+                            <div>
+                                <p className='message-info'>
+                                    <span>15:00 PM</span> - <i>Username</i>
+                                </p>
+                            </div>
+                            <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
                     </div>
                     <div className='message message-right'>
                         <div className='message-body'>
-                            <p><span>15:00 PM</span> - <i>Username</i></p>
-                            <p>I'm good, thanks! How about you?</p>
+                            <div>
+                                <p className='message-info'>
+                                    <span>15:00 PM</span> - <i>Username</i>
+                                </p>
+                            </div>
+                            <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
                     </div>
                 </div>

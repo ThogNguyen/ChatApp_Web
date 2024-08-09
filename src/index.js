@@ -12,9 +12,9 @@ root.render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/chatroom" element={<ChatRoom />} />
+        <Route path="/" element={<ChatRoom />} />
       </Routes>
     </Router>
   </React.StrictMode>

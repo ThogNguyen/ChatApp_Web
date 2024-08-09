@@ -2,6 +2,7 @@ import React from 'react';
 import './RoomList.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
+import { Link } from 'react-router-dom';
 
 export default function RoomList() {
     return (
@@ -14,9 +15,9 @@ export default function RoomList() {
                 </h2>
                 <div id="collapseOne" className="accordion-collapse collapse show custom-accordion-body" data-bs-parent="#accordionExample">
                     <div className="accordion-body">
-                        <a href="/chatroom">Room 1</a>
-                        <a href="/chatroom">Room 2</a>
-                        <a href="/chatroom">Room 3</a>
+                        <Link href="/chatroom">Room 1</Link>
+                        <Link href="/chatroom">Room 2</Link>
+                        <Link href="/chatroom">Room 3</Link>
 
                         <button className="btn btn-primary btn-create-group mt-3" data-bs-toggle="modal" data-bs-target="#createRoomModal">Create Group</button>
                     </div>
