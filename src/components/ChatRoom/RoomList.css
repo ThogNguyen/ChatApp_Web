@@ -32,9 +32,16 @@
     font-weight: bold; 
 }
 
+
 .custom-accordion-body a:hover {
     background-color: #8d4b8a; 
     color: #ffffff;
+}
+
+
+.list-groups{
+    list-style: none;
+    margin-left: -30px;
 }
 
 /* Center the Create Room button horizontally */

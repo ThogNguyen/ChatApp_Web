@@ -1,33 +1,66 @@
-import React from 'react';
-import './ListUser.css'
+import React, { useEffect, useState } from 'react';
+import './ListUser.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function ListUser() {
-    return (
-        <>
-            <div className='sidebar-users-container'>
-                <div className='row'>
-                    <h3 className='group-title'>Group Info</h3>
-                </div>
+export default function ListUser({ groupId }) {
+    const [users, setUsers] = useState([]);
+    const [error, setError] = useState('');
 
-                <div className='row'>
-                    <div className='col-md-12'>
-                        <div className='users-info'>
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const token = sessionStorage.getItem('token');
+            if (token && groupId) {
+                try {
+                    const response = await fetch(`https://localhost:7186/api/GroupMembers/${groupId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        setUsers(data);
+                    } else {
+                        const errorData = await response.json();
+                        setError(errorData.error || 'Failed to fetch users.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching users:', error);
+                    setError('An error occurred while fetching users.');
+                }
+            } else {
+                console.warn('No token found in sessionStorage or groupId is missing.');
+            }
+        };
+
+        fetchUsers();
+    }, [groupId]);
+
+    return (
+        <div className='sidebar-users-container'>
+            <div className='row'>
+                <h3 className='group-title'>Group Info</h3>
+            </div>
+            <div className='row'>
+                <div className='col-md-12'>
+                    <div className='users-info'>
+                        {error && <div className="alert alert-danger">{error}</div>}
+                        {users.length > 0 ? (
                             <ul>
-                                <li>
-                                    <p>Nguyen Van A</p>
-                                </li>
-                                <li>
-                                    <p>Nguyen Van b</p>
-                                </li>
-                                <li>
-                                    <p>Nguyen Van C</p>
-                                </li>
+                                {users.map(user => (
+                                    <li key={user.user_Id}>
+                                        <p>{user.userName}</p> 
+                                    </li>
+                                ))}
                             </ul>
-                        </div>
+                        ) : (
+                            <p>No users found.</p>
+                        )}
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

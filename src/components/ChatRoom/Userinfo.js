@@ -14,10 +14,10 @@ export default function Userinfo() {
             try {
                 // Decode the token
                 const decodedToken = jwtDecode(token);
-                //console.log(decodedToken);
+                // console.log(decodedToken);
                 const userNameClaim = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
                 setUsername(userNameClaim || '');
-                //console.log('Decoded Username:', userNameClaim);
+                // console.log('Decoded Username:', userNameClaim);
             } catch (error) {
                 console.error('Token decoding failed:', error);
             }

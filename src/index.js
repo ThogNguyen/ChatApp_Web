@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 import Login from './components/Account/LoginPage/Login';
 import Register from './components/Account/RegisterPage/Register';
-import ChatRoom from "./components/ChatRoom/App"
+import ChatRoom from "./components/ChatRoom/ChatRoom";
 import PublicRoute from './components/Authentication/PublicRoute';
 import PrivateRoute from './components/Authentication/PrivateRoute';
 
@@ -14,26 +14,26 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
-      <Routes>
-        <Route
-          path="/login"
-          element={
+    <Routes>
+        <Route path="/login" element={
             <PublicRoute>
               <Login />
             </PublicRoute>
           }
         />
-        <Route
-          path="/register"
-          element={
+        <Route path="/register" element={
             <PublicRoute>
               <Register />
             </PublicRoute>
           }
         />
-        <Route
-          path="/"
-          element={
+        <Route path="/" element={
+            <PrivateRoute>
+              <ChatRoom />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/:groupId" element={
             <PrivateRoute>
               <ChatRoom />
             </PrivateRoute>
