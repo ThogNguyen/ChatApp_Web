@@ -1,6 +1,6 @@
 import "./Register.css";
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Login() {
@@ -8,22 +8,48 @@ export default function Login() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmpassword, setConfirmPassword] = useState('');
+    const [confirmpassword, setConfirmPassword] = useState(''); 
+    const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const navigate = useNavigate(); 
 
     const submit = async (e) => {
         e.preventDefault(); 
 
-        // const response = await fetch('https://localhost:7122/api/Accounts/register'){
-        //     // method: 'Post',
-            
-        // }
+        // Validate password and confirm password match
+        if (password !== confirmpassword) {
+            setError('Mật khẩu không khớp.');
+            return;
+        }
 
-        console.log({
-            username,
-            email,
-            password,
-            confirmpassword
-        });
+        try {
+            const response = await fetch('https://localhost:7186/api/Accounts/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password,
+                    confirmPassword: confirmpassword
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setSuccessMessage('Đăng kí thành công! Đang chuyển hướng tới đăng nhập...');
+                setError(''); 
+                setTimeout(() => navigate('/login'), 2000);
+            } else {
+                setSuccessMessage('');
+                setError(data.Errors || 'Đăng kí thất bại.');
+            }
+        } catch (error) {
+            setError('Có lỗi xảy ra trong quá trình đăng kí.');
+            setSuccessMessage('');
+        }
     }
 
     return (
@@ -31,6 +57,8 @@ export default function Login() {
             <div className="register-container">
                 <h5 className="text-center mb-4 register-title">Register</h5>
                 <form onSubmit={submit}>
+                {error && <div className="alert alert-danger">{error}</div>}
+                {successMessage && <div className="alert alert-success">{successMessage}</div>}
                 <div className="mb-3">
                         <input 
                             type="text" 

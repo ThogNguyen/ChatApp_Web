@@ -28,8 +28,8 @@ export default function ChatWindow() {
                         </div>
                         <div className="modal-body">
                             <div className="mb-3">
-                                <label htmlFor="roomName" className="form-label">Name</label>
-                                <input type="text" className="form-control" id="roomName" placeholder="Input your friend name" />
+                                <label htmlFor="friendName" className="form-label">Name</label>
+                                <input type="text" className="form-control" id="friendName" placeholder="Input your friend name" />
                             </div>
                         </div>
                         <div className="modal-footer">
