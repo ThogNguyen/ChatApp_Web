@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import './ListUser.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function ListUser({ groupId }) {
+export default function ListUser({ group_Id, onUsersFetched }) {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchUsers = async () => {
             const token = sessionStorage.getItem('token');
-            if (token && groupId) {
+            if (token && group_Id) {
                 try {
-                    const response = await fetch(`https://localhost:7186/api/GroupMembers/${groupId}`, {
+                    const response = await fetch(`https://localhost:7186/api/GroupMembers/${group_Id}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -22,6 +22,9 @@ export default function ListUser({ groupId }) {
                     if (response.ok) {
                         const data = await response.json();
                         setUsers(data);
+                        if (onUsersFetched) {
+                            onUsersFetched(data);
+                        }
                     } else {
                         const errorData = await response.json();
                         setError(errorData.error || 'Failed to fetch users.');
@@ -36,7 +39,7 @@ export default function ListUser({ groupId }) {
         };
 
         fetchUsers();
-    }, [groupId]);
+    }, [group_Id, onUsersFetched]); // Include onUsersFetched in dependency array
 
     return (
         <div className='sidebar-users-container'>
@@ -51,7 +54,7 @@ export default function ListUser({ groupId }) {
                             <ul>
                                 {users.map(user => (
                                     <li key={user.user_Id}>
-                                        <p>{user.userName}</p> 
+                                        <p>{user.userName}</p>
                                     </li>
                                 ))}
                             </ul>

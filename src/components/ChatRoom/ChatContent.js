@@ -1,12 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ChatWindow from './ChatWindow';
 import ListUser from './ListUser';
 import './ChatContent.css';
 
-export default function ChatContent({ groupId }) {
+export default function ChatContent({ group_Id }) {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            if (group_Id) {
+                try {
+                    const token = sessionStorage.getItem('token');
+                    const response = await fetch(`https://localhost:7186/api/GroupMembers/${group_Id}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    if (response.ok) {
+                        const fetchedUsers = await response.json();
+                        setUsers(fetchedUsers);
+                    } else {
+                        console.error('Failed to fetch users.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching users:', error);
+                }
+            }
+        };
+
+        fetchUsers();
+    }, [group_Id]);
+
+    const handleUsersFetched = (fetchedUsers) => {
+        setUsers(fetchedUsers);
+    };
+
+    const handleUserAdded = (newUser) => {
+        setUsers(prevUsers => [...prevUsers, newUser]);
+    };
+
     return (
         <div className='row'>
-            {!groupId ? (
+            {!group_Id ? (
                 <div className='col-sm-12 col-md-12'>
                     <div className="placeholder">
                         <p>Please select a group to start chatting.</p>
@@ -15,10 +53,10 @@ export default function ChatContent({ groupId }) {
             ) : (
                 <>
                     <div className='col-sm-8 col-md-8'>
-                        <ChatWindow groupId={groupId} />
+                        <ChatWindow group_Id={group_Id} onUserAdded={handleUserAdded} />
                     </div>
                     <div className='col-sm-4 col-md-4'>
-                        <ListUser groupId={groupId} />
+                        <ListUser group_Id={group_Id} onUsersFetched={handleUsersFetched} />
                     </div>
                 </>
             )}

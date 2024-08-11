@@ -1,8 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import './ChatWindow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function ChatWindow() {
+export default function ChatWindow({ onUserAdded }) {
+    const { group_Id } = useParams();
+
+    const [username, setUsername] = useState('');
+    const [error, setError] = useState('');
+
+    const handleInputChange = (e) => {
+        setUsername(e.target.value);
+    };
+
+    const handleAddMember = async () => {
+        const token = sessionStorage.getItem('token');
+        if (token && group_Id && username) {
+            try {
+                const response = await fetch(`https://localhost:7186/api/GroupMembers/add-people`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ group_Id, username }),
+                });
+
+                if (response.ok) {
+                    const contentType = response.headers.get('Content-Type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const newUser = await response.json();
+                        // Gọi hàm cập nhật danh sách người dùng khi thành công
+                        if (onUserAdded) {
+                            onUserAdded(newUser);
+                        }
+                    } else {
+                        console.warn('Expected JSON response but got', contentType);
+                    }
+                    setUsername('');
+                } else {
+                    const errorData = await response.text(); // Handle non-JSON response
+                    setError(errorData || 'Failed to add member.');
+                }
+            } catch (error) {
+                console.error('Error adding member:', error);
+                setError('An error occurred while adding member.');
+            }
+        } else {
+            console.warn('No token found in sessionStorage or groupId is missing.');
+        }
+    };
+
     return (
         <div className='chat-container'>
             <div className='chat-header'>
@@ -29,12 +77,19 @@ export default function ChatWindow() {
                         <div className="modal-body">
                             <div className="mb-3">
                                 <label htmlFor="friendName" className="form-label">Name</label>
-                                <input type="text" className="form-control" id="friendName" placeholder="Input your friend name" />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="friendName"
+                                    placeholder="Input your friend name"
+                                    value={username}
+                                    onChange={handleInputChange}
+                                />
                             </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Add</button>
+                            <button type="button" className="btn btn-primary" onClick={handleAddMember}>Add</button>
                         </div>
                     </div>
                 </div>

@@ -35,7 +35,7 @@ root.render(
             </PrivateRoute>
           }
         />
-        <Route path="/:groupId" element={
+        <Route path="/:group_Id" element={
             <PrivateRoute>
               <ChatRoom />
             </PrivateRoute>

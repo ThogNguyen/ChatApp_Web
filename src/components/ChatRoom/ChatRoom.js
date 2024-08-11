@@ -6,7 +6,7 @@ import ChatContent from './ChatContent';
 
 export default function ChatRoom() {
 
-    const { groupId } = useParams();
+    const { group_Id } = useParams();
 
     return (
         <>
@@ -15,7 +15,7 @@ export default function ChatRoom() {
                     <Sidebar />
                 </div>
                 <div className='col-sm-9 col-md-9'>
-                    <ChatContent groupId={groupId} />
+                    <ChatContent group_Id={group_Id} />
                 </div>
             </div>
         </>
