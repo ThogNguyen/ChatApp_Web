@@ -11,16 +11,10 @@ export default function ChatRoom() {
     return (
         <>
             <div className='row'>
-                <div className='col-md-3'>
+                <div className='col-sm-3 col-md-3'>
                     <Sidebar />
                 </div>
-                {/* <div className='col-md-6'>
-                    <ChatWindow groupId={groupId} />
-                </div>
-                <div className='col-md-3'>
-                    <ListUser groupId={groupId} />
-                </div> */}
-                <div className='col-md-9'>
+                <div className='col-sm-9 col-md-9'>
                     <ChatContent groupId={groupId} />
                 </div>
             </div>

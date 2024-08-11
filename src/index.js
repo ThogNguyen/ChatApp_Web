@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Login from './components/Account/LoginPage/Login';
 import Register from './components/Account/RegisterPage/Register';
 import ChatRoom from "./components/ChatRoom/ChatRoom";

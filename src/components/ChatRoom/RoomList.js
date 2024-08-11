@@ -2,51 +2,84 @@ import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import './RoomList.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.js';
 import { Link } from 'react-router-dom';
 
 export default function RoomList() {
 
     const [groups, setGroups] = useState([]);
     const [error, setError] = useState('');
+    const [inputError, setInputError] = useState('');
     const [userId, setUserId] = useState('');
+    const [roomName, setRoomName] = useState('');
+    
+
+    const fetchUserGroup = async () => {
+        const token = sessionStorage.getItem('token');
+        if (token) {
+            try {
+                const decodedToken = jwtDecode(token);
+                const userIdClaim = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+                setUserId(userIdClaim || '');
+
+                const response = await fetch(`https://localhost:7186/api/GroupMembers/user/${userIdClaim}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setGroups(Array.isArray(data) ? data : []); // Đảm bảo dữ liệu là mảng
+                } else {
+                    const errorData = await response.json();
+                    setError(errorData.message || 'Failed to fetch groups.');
+                }
+            } catch (error) {
+                console.error('Token decoding failed:', error);
+                setError('Failed to decode token.');
+            }
+        } else {
+            console.warn('No token found in sessionStorage.');
+        }
+    };
 
     useEffect(() => {
-        const fetchUserGroup = async () => {
-            const token = sessionStorage.getItem('token');
-            if (token) {
-                try {
-                    const decodedToken = jwtDecode(token);
-                    const userIdClaim = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
-                    setUserId(userIdClaim || '');
-
-                    // Fetch the user's groups
-                    const response = await fetch(`https://localhost:7186/api/GroupMembers/user/${userIdClaim}`, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json',
-                        },
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        setGroups(data);
-                    } else {
-                        const errorData = await response.json();
-                        setError(errorData.error || 'Failed to fetch groups.');
-                    }
-
-                } catch (error) {
-                    console.error('Token decoding failed:', error);
-                }
-            } else {
-                console.warn('No token found in sessionStorage.');
-            }
-        };
         fetchUserGroup();
     }, []);
 
+    const createGroup = async () => {
+        const token = sessionStorage.getItem('token');
+        if (token && roomName && userId) {
+            try {
+                const response = await fetch(`https://localhost:7186/api/Groups?userId=${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ groupName: roomName }),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    setGroups(prevGroups => [...prevGroups, result]); // Update the groups
+                    setRoomName('');
+
+                    fetchUserGroup(); // Reload the groups
+                } else {
+                    const errorData = await response.json();
+                    setInputError(errorData.message || 'Không thể tạo nhóm.');
+                }
+            } catch (error) {
+                console.error('Lỗi khi tạo nhóm:', error);
+                setInputError('Lỗi khi tạo nhóm');
+            }
+        } else {
+            console.warn('Thiếu tên group hoặc tên phòng.');
+        }
+    };
 
 
     return (
@@ -63,9 +96,11 @@ export default function RoomList() {
                         {groups.length > 0 ? (
                             <ul className='list-groups'>
                                 {groups.map(group => (
-                                    <li key={group.group_Id}> 
-                                        <Link to={`/${group.group_Id}`}>{group.groupName}</Link>   
-                                    </li>
+                                    group.group_Id ? (
+                                        <li key={group.group_Id}>
+                                            <Link to={`/${group.group_Id}`}>{group.groupName}</Link>
+                                        </li>
+                                    ) : null
                                 ))}
                             </ul>
                         ) : (
@@ -85,12 +120,20 @@ export default function RoomList() {
                         <div className="modal-body">
                             <div className="mb-3">
                                 <label htmlFor="roomName" className="form-label">Room Name</label>
-                                <input type="text" className="form-control" id="roomName" placeholder="Enter room name" />
+                                {inputError && <div className="alert alert-danger">{inputError}</div>}
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="roomName"
+                                    value={roomName}
+                                    onChange={(e) => setRoomName(e.target.value)}
+                                    placeholder="Enter room name"
+                                />
                             </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Create Room</button>
+                            <button type="button" className="btn btn-primary" onClick={createGroup}>Create Room</button>
                         </div>
                     </div>
                 </div>
