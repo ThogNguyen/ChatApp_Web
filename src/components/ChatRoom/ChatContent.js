@@ -5,6 +5,7 @@ import './ChatContent.css';
 
 export default function ChatContent({ group_Id }) {
     const [users, setUsers] = useState([]);
+    const [memberCount, setMemberCount] = useState(0);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -22,6 +23,7 @@ export default function ChatContent({ group_Id }) {
                     if (response.ok) {
                         const fetchedUsers = await response.json();
                         setUsers(fetchedUsers);
+                        setMemberCount(fetchedUsers.length);
                     } else {
                         console.error('Failed to fetch users.');
                     }
@@ -36,10 +38,15 @@ export default function ChatContent({ group_Id }) {
 
     const handleUsersFetched = (fetchedUsers) => {
         setUsers(fetchedUsers);
+        setMemberCount(fetchedUsers.length);
     };
 
     const handleUserAdded = (newUser) => {
-        setUsers(prevUsers => [...prevUsers, newUser]);
+        setUsers(prevUsers => {
+            const updatedUsers = [...prevUsers, newUser];
+            setMemberCount(updatedUsers.length);
+            return updatedUsers;
+        });
     };
 
     return (
@@ -53,7 +60,7 @@ export default function ChatContent({ group_Id }) {
             ) : (
                 <>
                     <div className='col-sm-8 col-md-8'>
-                        <ChatWindow group_Id={group_Id} onUserAdded={handleUserAdded} />
+                        <ChatWindow group_Id={group_Id} memberCount={memberCount} onUserAdded={handleUserAdded} />
                     </div>
                     <div className='col-sm-4 col-md-4'>
                         <ListUser group_Id={group_Id} onUsersFetched={handleUsersFetched} />
