@@ -14,8 +14,7 @@ import PrivateRoute from './components/Authentication/PrivateRoute';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
-    <Router>
+  <Router>
     <Routes>
         <Route path="/login" element={
             <PublicRoute>
@@ -43,5 +42,4 @@ root.render(
         />
       </Routes>
     </Router>
-  </React.StrictMode>
 );

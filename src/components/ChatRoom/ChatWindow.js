@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import { format } from 'date-fns';
+import { jwtDecode } from 'jwt-decode';
 import './ChatWindow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -8,6 +10,7 @@ export default function ChatWindow({ memberCount, onUserAdded }) {
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
     const [groupInfo, setGroupInfo] = useState({ groupName: '', memberCount: 0 });
+    const [messages, setMessages] = useState([]);
 
     const handleInputChange = (e) => {
         setUsername(e.target.value);
@@ -55,32 +58,75 @@ export default function ChatWindow({ memberCount, onUserAdded }) {
         }
     };
 
-    useEffect(() => {
-        const fetchGroupInfo = async () => {
-            try {
-                const token = sessionStorage.getItem('token');
-                const response = await fetch(`https://localhost:7186/api/GroupMembers/info/${group_Id}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setGroupInfo(data);
-                } else {
-                    setError('Failed to fetch group information.');
+    const fetchGroupInfo = useCallback(async () => {
+        try {
+            const token = sessionStorage.getItem('token');
+            const response = await fetch(`https://localhost:7186/api/GroupMembers/info/${group_Id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
                 }
-            } catch (error) {
-                console.error('Error fetching group information:', error);
-                setError('An error occurred while fetching group information.');
-            }
-        };
+            });
 
-        if (group_Id) {
-            fetchGroupInfo();
+            if (response.ok) {
+                const data = await response.json();
+                setGroupInfo(data);
+            } else {
+                setError('Failed to fetch group information.');
+            }
+        } catch (error) {
+            console.error('Error fetching group information:', error);
+            setError('An error occurred while fetching group information.');
         }
     }, [group_Id]);
+
+    const fetchMessages = useCallback(async () => {
+        try {
+            const token = sessionStorage.getItem('token');
+            const response = await fetch(`https://localhost:7186/api/Message/get-messages/${group_Id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setMessages(data);
+            } else {
+                setError('Failed to fetch messages.');
+            }
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+            setError('An error occurred while fetching messages.');
+        }
+    }, [group_Id]);
+
+    // Function to get userId from token
+    const getUserIdFromToken = (token) => {
+        try {
+            const decodedToken = jwtDecode(token);
+            const userIdClaim = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+            return userIdClaim;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return null; // Return null if decoding fails
+        }
+    };
+
+    // useEffect to log userId from token
+    useEffect(() => {
+        const token = sessionStorage.getItem('token');
+        if (token) {
+            const userId = getUserIdFromToken(token);
+            sessionStorage.setItem('userId', userId);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (group_Id) {
+            fetchGroupInfo();
+            fetchMessages();
+        }
+    }, [group_Id, fetchGroupInfo, fetchMessages]);
 
     useEffect(() => {
         setGroupInfo(prevGroupInfo => ({
@@ -88,7 +134,6 @@ export default function ChatWindow({ memberCount, onUserAdded }) {
             memberCount
         }));
     }, [memberCount]);
-
 
     return (
         <div className='chat-container'>
@@ -137,7 +182,7 @@ export default function ChatWindow({ memberCount, onUserAdded }) {
 
             <div className='chat-content'>
                 <div className='message-container'>
-                    <div className='message message-left'>
+                    {/* <div className='message message-left'>
                         <div className='message-body'>
                             <div>
                                 <p className='message-info'>
@@ -156,98 +201,22 @@ export default function ChatWindow({ memberCount, onUserAdded }) {
                             </div>
                             <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
-                    </div>
-                    <div className='message message-left'>
-                        <div className='message-body'>
-                            <div>
-                                <p className='message-info'>
-                                    <span>15:00 PM</span> - <i>Username</i>
-                                </p>
+                    </div> */}
+
+                    {messages.map((message) => (
+                        <div key={message.messageId} 
+                            className={`message ${message.user_Id === sessionStorage.getItem('userId') 
+                            ? 'message-right' : 'message-left'}`}>
+                            <div className='message-body'>
+                                <div>
+                                    <p className='message-info'>
+                                        <span>{format(new Date(message.sentAt), 'hh:mm a')}</span> - <i>{message.username}</i>
+                                    </p>
+                                </div>
+                                <p className='message-content'>{message.messageContent}</p>
                             </div>
-                            <p className='message-content'>I'm good, thanks! How about you?</p>
                         </div>
-                    </div>
-                    <div className='message message-right'>
-                        <div className='message-body'>
-                            <div>
-                                <p className='message-info'>
-                                    <span>15:00 PM</span> - <i>Username</i>
-                                </p>
-                            </div>
-                            <p className='message-content'>I'm good, thanks! How about you?</p>
-                        </div>
-                    </div>
-                    <div className='message message-left'>
-                        <div className='message-body'>
-                            <div>
-                                <p className='message-info'>
-                                    <span>15:00 PM</span> - <i>Username</i>
-                                </p>
-                            </div>
-                            <p className='message-content'>I'm good, thanks! How about you?</p>
-                        </div>
-                    </div>
-                    <div className='message message-right'>
-                        <div className='message-body'>
-                            <div>
-                                <p className='message-info'>
-                                    <span>15:00 PM</span> - <i>Username</i>
-                                </p>
-                            </div>
-                            <p className='message-content'>I'm good, thanks! How about you?</p>
-                        </div>
-                    </div>
-                    <div className='message message-left'>
-                        <div className='message-body'>
-                            <div>
-                                <p className='message-info'>
-                                    <span>15:00 PM</span> - <i>Username</i>
-                                </p>
-                            </div>
-                            <p className='message-content'>I'm good, thanks! How about you?</p>
-                        </div>
-                    </div>
-                    <div className='message message-right'>
-                        <div className='message-body'>
-                            <div>
-                                <p className='message-info'>
-                                    <span>15:00 PM</span> - <i>Username</i>
-                                </p>
-                            </div>
-                            <p className='message-content'>I'm good, thanks! How about you?</p>
-                        </div>
-                    </div>
-                    <div className='message message-left'>
-                        <div className='message-body'>
-                            <div>
-                                <p className='message-info'>
-                                    <span>15:00 PM</span> - <i>Username</i>
-                                </p>
-                            </div>
-                            <p className='message-content'>I'm good, thanks!
-                            </p>
-                        </div>
-                    </div>
-                    <div className='message message-right'>
-                        <div className='message-body'>
-                            <div>
-                                <p className='message-info'>
-                                    <span>15:00 PM</span> - <i>Username</i>
-                                </p>
-                            </div>
-                            <p className='message-content'>I'm good, thanks! How about you?</p>
-                        </div>
-                    </div>
-                    <div className='message message-right'>
-                        <div className='message-body'>
-                            <div>
-                                <p className='message-info'>
-                                    <span>15:00 PM</span> - <i>Username</i>
-                                </p>
-                            </div>
-                            <p className='message-content'>I'm good, thanks! How about you?</p>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
 
