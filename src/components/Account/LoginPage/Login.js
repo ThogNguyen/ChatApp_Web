@@ -1,6 +1,7 @@
 import "./Login.css";
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; 
+import { jwtDecode } from 'jwt-decode';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Login() {
@@ -26,7 +27,22 @@ export default function Login() {
             const data = await response.json();
 
             if (response.ok) {
-                sessionStorage.setItem('token', data.token);
+
+                const { token } = data;
+
+                // Decode the token to get user details
+                const decodedToken = jwtDecode(token);
+
+                //console.log(decodedToken);
+                
+                const userId = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+                const username = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+
+                // Store token and user details in session storage
+                sessionStorage.setItem('token', token);
+                sessionStorage.setItem('userId', userId);
+                sessionStorage.setItem('username', username);
+
                 setSuccessMessage('Đăng nhập thành công! Đang chuyển hướng...');
                 setError('');
                 setTimeout(() => navigate('/'), 2000);
@@ -48,7 +64,7 @@ export default function Login() {
                     <div className="mb-3">
                         <label htmlFor="username" className="form-label">Email</label>
                         <input
-                            type="username"
+                            type="text"
                             className="form-control"
                             id="username"
                             placeholder="Input your username"

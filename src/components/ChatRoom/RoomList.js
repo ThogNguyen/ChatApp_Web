@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import './RoomList.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
@@ -9,19 +8,15 @@ export default function RoomList() {
     const [groups, setGroups] = useState([]);
     const [error, setError] = useState('');
     const [inputError, setInputError] = useState('');
-    const [userId, setUserId] = useState('');
     const [roomName, setRoomName] = useState('');
     
 
     const fetchUserGroup = async () => {
         const token = sessionStorage.getItem('token');
+        const userId = sessionStorage.getItem('userId');
         if (token) {
             try {
-                const decodedToken = jwtDecode(token);
-                const userIdClaim = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
-                setUserId(userIdClaim || '');
-
-                const response = await fetch(`https://localhost:7186/api/GroupMembers/user/${userIdClaim}`, {
+                const response = await fetch(`https://localhost:7186/api/GroupMembers/user/${userId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -31,10 +26,10 @@ export default function RoomList() {
 
                 if (response.ok) {
                     const data = await response.json();
-                    setGroups(Array.isArray(data) ? data : []); // Đảm bảo dữ liệu là mảng
+                    setGroups(Array.isArray(data) ? data : []); 
                 } else {
                     const errorData = await response.json();
-                    setError(errorData.message || 'Failed to fetch groups.');
+                    setError(errorData.message || 'Lấy danh sách nhóm thât bại.');
                 }
             } catch (error) {
                 console.error('Token decoding failed:', error);
@@ -51,6 +46,7 @@ export default function RoomList() {
 
     const createGroup = async () => {
         const token = sessionStorage.getItem('token');
+        const userId = sessionStorage.getItem('userId');
         if (token && roomName && userId) {
             try {
                 const response = await fetch(`https://localhost:7186/api/Groups?userId=${userId}`, {
@@ -77,7 +73,7 @@ export default function RoomList() {
                 setInputError('Lỗi khi tạo nhóm');
             }
         } else {
-            console.warn('Thiếu tên group hoặc tên phòng.');
+            console.warn('Thiếu tên group hoặc id người dùng.');
         }
     };
 

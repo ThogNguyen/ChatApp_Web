@@ -30,6 +30,7 @@
     display: flex;
     background-color: #f1f1f1; 
     flex-direction: column-reverse;
+    overflow-y: auto;
 }
 
 .message-container {
